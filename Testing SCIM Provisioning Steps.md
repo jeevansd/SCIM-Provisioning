@@ -90,38 +90,29 @@ BodyParameter $params
 2. Sign in with an account that has appropriate permissions in your tenant
 3. Use the following POST request to create a synchronization job:
 
-```JSON
-HTTP Method: POST
+```http
+POST https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/jobs
+Content-Type: application/json \
 
-URL:https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchr
-onization/jobs
-
-Request Headers: Content-Type: application/json 
-Request Body:
 { 
-"templateId": "<Template_ID_Provided_by_Microsoft>" 
+    "templateId": "<Template_ID_Provided_by_Microsoft>" 
 } 
 ```
+In the request body supply the template Id
 
 4. Configure Synchronization Secrets (Optional): 
 Note: This step is only required for the gallery applications which still doesn't 
 provide fields for OAuth2 client credentials in the provisioning configuration UI. Then you have to use the Graph API approach below.
 
-```JSON
-HTTP Method: PUT
+```http
+PUT https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchronization/secrets
+Content-Type: application/json 
 
-URL: 
-https://graph.microsoft.com/v1.0/servicePrincipals/{servicePrincipalId}/synchroniz
-ation/secrets
-
-Request Headers: Content-Type: application/json 
-
-Request Body: 
 { 
     "value": [ 
         { 
             "key": "BaseAddress", 
-            "value": "<Your_Base_Address_URL>" // Replace with actual Base address URL of your application
+            "value": "<Your_Base_Address_URL>"
         }, 
         { 
             "key": "AuthenticationType", 
@@ -129,15 +120,15 @@ Request Body:
         }, 
         { 
             "key": "Oauth2TokenExchangeUri", 
-            "value": "<Your_application_token_endpoint_URL>" // Replace with actual token URL
+            "value": "<Your_application_token_endpoint_URL>"
         }, 
         { 
             "key": "Oauth2ClientId", 
-            "value": "<Your-client-id>"  // Replace with actual client ID 
+            "value": "<Your-client-id>"
         }, 
         { 
             "key": "Oauth2ClientSecret", 
-            "value": "your-client-secret"  // Replace with actual client secret 
+            "value": "your-client-secret"
         }, 
         { 
             "key": "SyncNotificationSettings", 
@@ -150,11 +141,12 @@ Request Body:
     ] 
 } 
 ```
+In the request body supply the above values.
 
 ## References:  
-- Create synchronizationJob - Microsoft Graph v1.0 | Microsoft Learn 
-- Graph Explorer | Try Microsoft Graph APIs - Microsoft Graph 
-- Add synchronization secrets - Microsoft Graph v1.0 | Microsoft Learn
+- [Create synchronizationJob - Microsoft Graph v1.0 | Microsoft Learn](https://learn.microsoft.com/en-us/graph/api/synchronization-synchronization-post-jobs?view=graph-rest-1.0&tabs=http)
+- [Graph Explorer | Try Microsoft Graph APIs - Microsoft Graph](https://developer.microsoft.com/en-us/graph/graph-explorer)
+- [Add synchronization secrets - Microsoft Graph v1.0 | Microsoft Learn](https://learn.microsoft.com/en-us/graph/api/synchronization-serviceprincipal-put-synchronization?view=graph-rest-1.0&tabs=http)
 
 ## Setting AppRoles for your application (Optional)
 
@@ -170,5 +162,6 @@ Some of the applications do not have AppRoles vs some of them do have AppRoles a
 
 > [!Note] 
 > To assign Groups to the application, Entra ID P1 license is required for the test tenant.
+
 
 Once successful validation is confirmed, please communicate back to Microsoft and contact and then they will proceed to enable provisioning across all tenants and release updates to the frontend. That way UI option will be available for all our customers to enable user provisioning.
